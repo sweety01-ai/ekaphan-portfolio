@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <base target="_top">
+  <style>
+/* ===== PALETTE — Willifred style (electric blue) ===== */
+:root{
+  --white:#ffffff;
+  --ice:#dbe7f5;        /* ข้อความสว่าง */
+  --blue-300:#5aa0f0;   /* ฟ้ากลาง */
+  --blue-500:#1e6dff;   /* น้ำเงินสด */
+  --blue-700:#0446f1;   /* น้ำเงิน electric หลัก */
+  --navy-800:#14213d;   /* กรมท่า */
+  --navy-900:#0d1526;   /* กรมท่าเข้ม */
+  --ink:#0a0f1c;        /* พื้นลึกสุด */
+  --ink-2:#0c1322;
+
+  /* accent electric blue */
+  --cyan:#2b7bff;       /* accent หลัก (คงชื่อ --cyan ให้โค้ดเดิมใช้ได้) */
+  --cyan-2:#0446f1;     /* น้ำเงินเข้มสด */
+  --cyan-soft:rgba(43,123,255,.15);
+  --cyan-line:rgba(43,123,255,.4);
+
+  --amber:#2b7bff;      /* alias → accent */
+  --amber-soft:rgba(43,123,255,.15);
+  --line:rgba(90,160,240,.16);
+  --glass:rgba(255,255,255,.04);
+  --txt:#dce6f5;
+  --txt-dim:#8298bd;
+  --radius:18px;
+  --font-d:'Prompt',system-ui,sans-serif;
+  --font-b:'Prompt',system-ui,sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-b);
+  font-weight:500;
+  color:var(--txt);
+  line-height:1.6;
+  overflow-x:hidden;
+  background:
+    radial-gradient(1000px 700px at 15% -5%, rgba(20,33,61,.6), transparent 55%),
+    radial-gradient(900px 600px at 90% 10%, rgba(4,70,241,.12), transparent 55%),
+    linear-gradient(180deg, var(--ink) 0%, var(--navy-900) 40%, var(--ink) 100%);
+  background-attachment:fixed;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* scroll-reveal เนียนๆ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+.eyebrow,.hero__eyebrow{
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--cyan);font-weight:600;margin-bottom:14px;
+}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(6,10,22,.4);
+  backdrop-filter:blur(18px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+  transition:.35s;
+}
+.nav--solid{background:rgba(6,10,22,.82);border-bottom-color:var(--cyan-line)}
+.nav__inner{
+  max-width:1200px;margin:0 auto;padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav__logo{font-family:var(--font-d);font-weight:700;font-size:1.3rem;letter-spacing:.14em;color:#fff;
+  text-shadow:0 0 24px rgba(43,123,255,.35)}
+.nav__links{display:flex;gap:30px}
+.nav__links a{font-size:.9rem;font-weight:600;color:var(--txt-dim);transition:.2s;position:relative}
+.nav__links a span{display:block;font-size:.62rem;color:var(--blue-300);font-weight:400;letter-spacing:.05em}
+.nav__links a:hover{color:#fff}
+.nav__links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--cyan-2));box-shadow:0 0 10px var(--cyan);transition:.25s}
+.nav__links a:hover::after{width:100%}
+.nav__burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer}
+.nav__burger span{width:26px;height:2px;background:#fff;transition:.3s}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  overflow:hidden;
+}
+.hero__glow{
+  position:absolute;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(43,123,255,.4),transparent 68%);
+  filter:blur(70px);opacity:.55;top:16%;right:-140px;animation:float 10s ease-in-out infinite;
+}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(600px 300px at 12% 80%,rgba(61,109,176,.28),transparent 70%)}
+@keyframes float{50%{transform:translateY(-34px)}}
+.hero__inner{
+  max-width:1000px;margin:0 auto;padding:140px 28px 80px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  width:100%;position:relative;z-index:2;
+}
+.hero__name{font-family:var(--font-d);font-weight:700;line-height:1.02;letter-spacing:.01em;margin:6px 0 18px}
+.hero__first{display:block;font-size:clamp(2rem,5vw,3.4rem);font-weight:600;color:var(--blue-300);opacity:.85}
+.hero__last{display:block;font-size:clamp(3rem,8.5vw,5.8rem);font-weight:700;color:#fff;
+  background:linear-gradient(120deg,#ffffff 0%,var(--cyan) 55%,var(--cyan-2) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 6px 40px rgba(43,123,255,.35))}
+.hero__role{font-size:1.05rem;color:var(--txt-dim);letter-spacing:.14em;text-transform:uppercase;margin-bottom:30px}
+.hero__cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 26px;border-radius:40px;font-weight:600;font-size:.92rem;
+  cursor:pointer;transition:.28s;border:1px solid transparent;
+}
+.btn--solid{background:linear-gradient(120deg,var(--cyan),var(--cyan-2));color:#04121a;
+  box-shadow:0 10px 40px -8px rgba(43,123,255,.55)}
+.btn--solid:hover{transform:translateY(-2px);box-shadow:0 16px 48px -8px rgba(43,123,255,.7)}
+.btn--ghost{border-color:var(--cyan-line);color:var(--cyan)}
+.btn--ghost:hover{background:var(--cyan-soft);box-shadow:0 0 24px -6px rgba(43,123,255,.4)}
+.btn--full{width:100%}
+
+.hero__visual{display:none}
+
+/* ===== SECTION TITLES ===== */
+.section__title{font-family:var(--font-d);font-weight:700;font-size:clamp(1.9rem,5vw,3rem);letter-spacing:.01em;color:#fff;
+  position:relative;display:inline-block}
+.section__title::after{content:'';position:absolute;left:0;bottom:-10px;width:64px;height:3px;
+  background:linear-gradient(90deg,var(--cyan),transparent);box-shadow:0 0 14px var(--cyan)}
+.section__sub{color:var(--txt-dim);margin-top:20px}
+
+/* ===== ABOUT ===== */
+.about{background:transparent;padding:110px 28px}
+.about__inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.about__photo{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;
+  background:linear-gradient(160deg,var(--navy-800),var(--ink));border:1px solid var(--line);
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.85)}
+.about__photo::after{content:'';position:absolute;inset:0;border-radius:20px;
+  box-shadow:inset 0 0 60px -20px rgba(43,123,255,.3);pointer-events:none}
+.about__photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.05)}
+.about__head{font-family:var(--font-d);font-weight:700;font-size:2.4rem;margin:2px 0 10px;color:#fff}
+.about__email{color:var(--cyan);margin-bottom:22px;font-weight:500}
+.about__desc{color:var(--txt-dim);font-size:1.02rem;white-space:pre-line}
+.about__loc{margin-top:26px;color:var(--ice);border-left:3px solid var(--cyan);padding-left:14px;white-space:pre-line}
+
+/* ===== RESUME ===== */
+.resume{padding:110px 28px;background:transparent}
+.resume__inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+.panel{
+  background:linear-gradient(160deg,rgba(20,31,61,.4),rgba(6,10,22,.5));
+  border:1px solid var(--line);border-radius:20px;padding:32px 32px 36px;position:relative;overflow:hidden;
+  box-shadow:0 24px 70px -40px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan-line),transparent);opacity:.6}
+.panel__head{margin-bottom:22px}
+.panel__head h3{font-size:1.4rem;font-weight:600;color:#fff;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.panel__head h3 span{font-size:.78rem;font-weight:400;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase}
+
+/* งานอดิเรก */
+.hobbies{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:14px}
+.hobby{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 12px;
+  background:rgba(6,10,22,.45);border:1px solid var(--line);border-radius:16px;transition:.28s}
+.hobby:hover{transform:translateY(-5px);border-color:var(--cyan-line);
+  box-shadow:0 16px 40px -20px rgba(43,123,255,.5);background:rgba(20,31,61,.5)}
+.hobby .ico{width:54px;height:54px;display:flex;align-items:center;justify-content:center;
+  border-radius:15px;background:linear-gradient(150deg,rgba(43,123,255,.16),rgba(61,109,176,.2));
+  border:1px solid var(--cyan-line);color:var(--cyan)}
+.hobby .ico svg{width:28px;height:28px;fill:var(--cyan)}
+.hobby:hover .ico{box-shadow:0 0 24px -4px rgba(43,123,255,.6) inset}
+.hobby span{font-size:.92rem;color:var(--ice);font-weight:500;text-align:center}
+
+/* การศึกษา */
+.edu{display:flex;flex-direction:column;gap:16px}
+.edu__item{padding:22px 24px;background:rgba(6,10,22,.45);border:1px solid var(--line);
+  border-radius:14px;border-left:3px solid var(--cyan);transition:.28s}
+.edu__item:hover{border-left-color:var(--cyan-2);box-shadow:0 14px 40px -24px rgba(43,123,255,.5)}
+.edu__item h4{font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:10px}
+.edu__item ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.edu__item li{color:var(--txt-dim);display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.edu__item li b{color:var(--ice);font-weight:500}
+.edu__grade{margin-left:auto;color:#04121a;font-weight:700;font-size:.85rem;
+  background:linear-gradient(120deg,var(--cyan),var(--cyan-2));padding:2px 12px;border-radius:20px;
+  box-shadow:0 0 18px -4px rgba(43,123,255,.6)}
+
+/* ประสบการณ์ */
+.exp{display:flex;flex-direction:column;gap:12px}
+.exp__row{display:flex;align-items:center;gap:14px}
+.exp__bar{flex:1;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:15px 24px;background:rgba(6,10,22,.45);border:1px solid var(--line);border-radius:40px;transition:.28s}
+.exp__row:hover .exp__bar{border-color:var(--cyan-line);background:rgba(20,31,61,.5);
+  box-shadow:0 14px 40px -22px rgba(43,123,255,.5);transform:translateX(4px)}
+.exp__name{color:#fff;font-weight:500;letter-spacing:.03em}
+.exp__year{color:var(--txt-dim);font-size:.9rem;font-weight:600;white-space:nowrap}
+.exp__dur{flex:none;min-width:52px;text-align:center;padding:10px 4px;border-radius:30px;
+  background:linear-gradient(120deg,var(--cyan),var(--cyan-2));
+  color:#04121a;font-weight:700;font-size:.88rem;box-shadow:0 0 20px -6px rgba(43,123,255,.7)}
+
+/* โปรแกรมหลัก */
+.softmain{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+.smcard{padding:24px;background:rgba(6,10,22,.45);border:1px solid var(--line);border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;transition:.28s}
+.smcard:hover{transform:translateY(-5px);border-color:var(--cyan-line);
+  box-shadow:0 18px 46px -22px rgba(43,123,255,.5)}
+.smcard__badge{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-b);font-weight:700;font-size:1.45rem;color:var(--cyan);
+  background:linear-gradient(150deg,rgba(43,123,255,.14),rgba(61,109,176,.18));
+  border:1px solid var(--cyan-line);text-shadow:0 0 20px rgba(43,123,255,.5)}
+.smcard__name{color:var(--ice);font-weight:500}
+.smcard__meter{width:100%;max-width:130px;height:12px;border-radius:20px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);overflow:hidden}
+.smcard__fill{height:100%;border-radius:20px;
+  background:linear-gradient(90deg,var(--cyan),var(--cyan-2));box-shadow:0 0 14px rgba(43,123,255,.6)}
+
+/* โปรแกรมเสริม */
+.softsub{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0;
+  background:rgba(6,10,22,.45);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.subitem{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 14px;
+  border-right:1px solid var(--line);transition:.28s}
+.subitem:last-child{border-right:0}
+.subitem:hover{background:rgba(43,123,255,.06)}
+.subitem .badge{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.95rem;color:var(--cyan);
+  background:linear-gradient(150deg,rgba(43,123,255,.12),rgba(61,109,176,.16));border:1px solid var(--cyan-line)}
+.subitem span{font-size:.86rem;color:var(--txt-dim);text-align:center}
+
+@media(max-width:640px){
+  .softsub{grid-template-columns:repeat(2,1fr)}
+  .subitem{border-bottom:1px solid var(--line)}
+  .exp__bar{flex-direction:column;align-items:flex-start;gap:4px;border-radius:16px}
+}
+
+/* ===== WORKS ===== */
+.works{padding:110px 28px;background:transparent;overflow:hidden}
+.works__head{max-width:1200px;margin:0 auto 46px}
+.works__groups{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:50px}
+.wgroup{border-top:1px solid var(--line);padding-top:26px}
+.wgroup__bar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.wgroup__label{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:9px 22px;border:1px solid var(--cyan-line);border-radius:24px;
+  color:var(--cyan);font-weight:600;font-size:.95rem;line-height:1.25;
+  background:var(--cyan-soft);box-shadow:0 0 24px -8px rgba(43,123,255,.4);
+}
+.wgroup__label small{display:block;font-size:.66rem;color:var(--blue-300);font-weight:400;text-align:center;margin-top:2px}
+.wgroup__nav{display:flex;gap:10px}
+.wnav{width:40px;height:40px;border-radius:50%;cursor:pointer;
+  background:var(--cyan-soft);border:1px solid var(--cyan-line);color:var(--cyan);
+  font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;
+  transition:.2s;padding-bottom:3px}
+.wnav:hover{background:var(--cyan);color:#fff;box-shadow:0 0 20px -4px rgba(43,123,255,.7)}
+.wnav:active{transform:scale(.92)}
+
+/* แทร็กเลื่อนแนวนอน */
+.wgroup__track{
+  display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;padding:6px 2px 16px;
+  scrollbar-width:thin;scrollbar-color:var(--cyan-line) transparent;
+}
+.wgroup__track::-webkit-scrollbar{height:8px}
+.wgroup__track::-webkit-scrollbar-thumb{background:var(--cyan-line);border-radius:20px}
+.wgroup__track::-webkit-scrollbar-track{background:transparent}
+
+.wcard{
+  position:relative;border-radius:16px;overflow:hidden;flex:none;scroll-snap-align:start;
+  background:linear-gradient(160deg,var(--navy-800),var(--ink));
+  border:1px solid var(--line);cursor:pointer;transition:.3s;
+}
+/* อัตราส่วนต่อชิ้น */
+.wcard.r45{width:min(240px,72vw);aspect-ratio:4/5}
+.wcard.r916{width:min(200px,60vw);aspect-ratio:9/16}
+.wcard img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.wcard__ph{width:100%;height:100%;
+  background:repeating-linear-gradient(135deg,rgba(43,123,255,.06) 0 12px,transparent 12px 24px)}
+.wcard:hover{transform:translateY(-5px);border-color:var(--cyan-line);
+  box-shadow:0 20px 50px -24px rgba(43,123,255,.5)}
+.wcard:hover img{transform:scale(1.06)}
+.wcard__cap{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;
+  background:linear-gradient(0deg,rgba(10,15,28,.95),transparent);
+  font-size:.85rem;color:#fff;font-weight:500}
+
+/* ===== VIDEOS ===== */
+.videos{padding:110px 28px;background:transparent}
+.video__wrap{max-width:1140px;margin:40px auto 0;display:grid;
+  grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.video__embed{position:relative;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;
+  border:1px solid var(--cyan-line);background:#000;
+  box-shadow:0 40px 100px -40px rgba(0,0,0,.85), 0 0 40px -10px rgba(43,123,255,.35)}
+.video__embed iframe,.video__embed #ytFrame{width:100%;height:100%;border:0;display:block}
+
+/* รายการวิดีโอเลือกเอง */
+.video__list{display:flex;flex-direction:column;gap:10px;max-height:min(72vh,520px);
+  overflow-y:auto;padding:4px;scrollbar-width:thin;scrollbar-color:var(--cyan-line) transparent}
+.video__list::-webkit-scrollbar{width:8px}
+.video__list::-webkit-scrollbar-thumb{background:var(--cyan-line);border-radius:20px}
+.vitem{display:flex;gap:12px;align-items:center;text-align:left;cursor:pointer;
+  padding:8px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(6,10,22,.45);color:var(--txt);transition:.22s;width:100%}
+.vitem:hover{border-color:var(--cyan-line);background:rgba(20,31,61,.5)}
+.vitem.active{border-color:var(--cyan);background:var(--cyan-soft);
+  box-shadow:0 0 20px -8px rgba(43,123,255,.6)}
+.vitem__thumb{position:relative;flex:none;width:120px;aspect-ratio:16/9;border-radius:8px;
+  overflow:hidden;background:#000}
+.vitem__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vitem__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.9rem;opacity:0;transition:.2s;background:rgba(43,123,255,.35)}
+.vitem:hover .vitem__play,.vitem.active .vitem__play{opacity:1}
+.vitem__title{font-size:.9rem;font-weight:500;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vitem.active .vitem__title{color:var(--cyan)}
+
+/* ปุ่มดูเพิ่มเติม -> ลิงก์ playlist */
+.vmore{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;
+  border:1px dashed var(--cyan-line);background:rgba(43,123,255,.06);color:var(--cyan);
+  text-decoration:none;transition:.22s;font-weight:600}
+.vmore:hover{background:var(--cyan-soft);border-style:solid;
+  box-shadow:0 0 22px -8px rgba(43,123,255,.6)}
+.vmore__ic{flex:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--cyan);color:#04121a;font-size:.85rem;padding-left:2px}
+.vmore__txt{display:flex;flex-direction:column;line-height:1.3;font-size:.95rem}
+.vmore__txt small{font-size:.72rem;color:var(--txt-dim);font-weight:400}
+.vmore__arrow{margin-left:auto;font-size:1.1rem;color:var(--cyan)}
+
+@media(max-width:860px){
+  .video__wrap{grid-template-columns:1fr}
+  .video__list{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:10px}
+  .vitem{flex:none;width:200px;flex-direction:column;align-items:stretch}
+  .vitem__thumb{width:100%}
+  .vmore{flex:none;width:170px;flex-direction:column;text-align:center;justify-content:center}
+  .vmore__arrow{margin:0}
+}
+
+/* ===== CONTACT (ภาพ 5) ===== */
+.contact{padding:110px 28px;background:transparent}
+.contact__inner{max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  background:linear-gradient(160deg,rgba(20,31,61,.55),rgba(6,10,22,.6));
+  border:1px solid var(--line);border-radius:24px;padding:44px;position:relative;overflow:hidden;
+  box-shadow:0 40px 100px -40px rgba(0,0,0,.85)}
+.contact__inner::before{content:'';position:absolute;top:-40%;right:-10%;width:340px;height:340px;
+  background:radial-gradient(circle,rgba(43,123,255,.14),transparent 70%);pointer-events:none}
+.contact__title{font-family:var(--font-d);font-weight:700;font-size:2.1rem;color:#fff;text-align:center;margin-bottom:4px}
+.contact__lead{text-align:center;color:var(--txt-dim);margin-bottom:20px}
+.contact__block{margin-top:26px}
+.contact__block h3{font-size:.95rem;font-weight:600;color:var(--ice);margin-bottom:14px;letter-spacing:.04em}
+.contact__block ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.contact__block li{display:flex;align-items:center;gap:12px;color:var(--txt-dim);font-size:.92rem}
+.contact__block li .ic{width:34px;height:34px;border-radius:9px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cyan-soft);border:1px solid var(--cyan-line);color:var(--cyan);font-size:.9rem}
+.social li a{color:var(--txt-dim);transition:.2s}
+.social li:hover a,.social li:hover{color:var(--cyan)}
+
+.contact__form{display:flex;flex-direction:column;gap:14px;justify-content:center;position:relative;z-index:1}
+.field input,.field textarea{
+  width:100%;padding:14px 16px;border-radius:12px;
+  background:rgba(6,10,22,.55);border:1px solid var(--line);
+  color:var(--txt);font-family:inherit;font-size:.95rem;resize:vertical;transition:.22s;
+}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--cyan-line);
+  background:rgba(6,10,22,.8);box-shadow:0 0 0 3px var(--cyan-soft)}
+.field input::placeholder,.field textarea::placeholder{color:#5f739a}
+.form__status{font-size:.85rem;text-align:center;min-height:20px}
+.form__status.ok{color:#7fd6a0}
+.form__status.err{color:#e08a8a}
+
+/* ===== FOOTER ===== */
+.footer{padding:34px;text-align:center;color:#5c7295;font-size:.82rem;
+  border-top:1px solid var(--line);background:rgba(6,10,22,.5)}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{position:fixed;inset:0;z-index:100;background:rgba(6,12,22,.9);
+  display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
+.lightbox.open{display:flex}
+.lightbox__inner{position:relative;width:min(960px,100%);aspect-ratio:16/9}
+.lightbox__inner iframe{width:100%;height:100%;border:0;border-radius:14px;background:#000}
+.lightbox__close{position:absolute;top:-46px;right:0;width:40px;height:40px;border-radius:50%;
+  background:rgba(39,71,119,.7);color:#fff;border:1px solid var(--blue-300);cursor:pointer;font-size:1rem}
+
+.loading{color:var(--txt-dim);padding:20px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:860px){
+  .nav__links{display:none;position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;gap:0;background:rgba(10,21,38,.98);padding:10px 0}
+  .nav__links.open{display:flex}
+  .nav__links a{padding:14px 28px}
+  .nav__links a span{display:inline;margin-left:6px}
+  .nav__burger{display:flex}
+  .hero__inner{grid-template-columns:1fr;text-align:center}
+  .hero__cta{justify-content:center}
+  .about__inner{grid-template-columns:1fr;gap:30px}
+  .wgroup__nav{display:none}
+  .contact__inner{grid-template-columns:1fr;padding:28px}
+}
+</style>
+
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#home" class="nav__logo" id="navLogo">EKAPHAN</a>
+      <nav class="nav__links">
+        <a href="#home">Home <span>หน้าแรก</span></a>
+        <a href="#about">About <span>เกี่ยวกับ</span></a>
+        <a href="#resume">Resume <span>ประวัติ</span></a>
+        <a href="#works">Works <span>ผลงาน</span></a>
+        <a href="#videos">Video <span>วิดีโอ</span></a>
+        <a href="#contact">Contact <span>ติดต่อ</span></a>
+      </nav>
+      <button class="nav__burger" id="burger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero__glow"></div>
+    <div class="hero__inner">
+      <div class="hero__text">
+        <p class="hero__eyebrow">PORTFOLIO · พอร์ตโฟลิโอ</p>
+        <h1 class="hero__name">
+          <span class="hero__first" id="heroFirst">PROFILE</span>
+          <span class="hero__last" id="heroLast">EKAPHAN</span>
+        </h1>
+        <p class="hero__role" id="heroRole">Graphic &amp; Advertising Designer</p>
+        <div class="hero__cta">
+          <a href="#works" class="btn btn--solid">ดูผลงาน · Works</a>
+          <a href="#contact" class="btn btn--ghost">ติดต่อ · Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="about__inner">
+      <div class="about__photo">
+        <img id="aboutPhoto" alt="profile" />
+      </div>
+      <div class="about__body">
+        <p class="eyebrow">ABOUT · เกี่ยวกับผม</p>
+        <h2 class="about__head" id="aboutHead">About</h2>
+        <p class="about__email" id="aboutEmail"></p>
+        <p class="about__desc" id="aboutDesc"></p>
+        <p class="about__loc" id="aboutLoc"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESUME (อดิเรก/การศึกษา/ประสบการณ์/โปรแกรม) ============ -->
+  <section class="resume" id="resume">
+    <div class="resume__inner">
+
+      <!-- งานอดิเรก -->
+      <div class="panel" id="panelHobbies">
+        <div class="panel__head"><h3>งานอดิเรก <span>Hobbies</span></h3></div>
+        <div class="hobbies" id="hobbiesGrid"></div>
+      </div>
+
+      <!-- การศึกษา -->
+      <div class="panel" id="panelEdu">
+        <div class="panel__head"><h3>ประวัติการศึกษา <span>Education</span></h3></div>
+        <div class="edu" id="eduList"></div>
+      </div>
+
+      <!-- ประสบการณ์ -->
+      <div class="panel" id="panelExp">
+        <div class="panel__head"><h3>ประสบการณ์การทำงาน <span>Experience</span></h3></div>
+        <div class="exp" id="expList"></div>
+      </div>
+
+      <!-- โปรแกรมหลัก -->
+      <div class="panel" id="panelSoftMain">
+        <div class="panel__head"><h3>โปรแกรมหลัก <span>Main Software</span></h3></div>
+        <div class="softmain" id="softMainGrid"></div>
+      </div>
+
+      <!-- โปรแกรมเสริม -->
+      <div class="panel" id="panelSoftSub">
+        <div class="panel__head"><h3>โปรแกรมเสริม <span>Other Tools</span></h3></div>
+        <div class="softsub" id="softSubGrid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ WORKS ============ -->
+  <section class="works" id="works">
+    <div class="works__head">
+      <h2 class="section__title">MY WORKS</h2>
+      <p class="section__sub">ผลงานที่ผ่านมา · แบ่งตามหมวดหมู่</p>
+    </div>
+    <div id="worksGroups" class="works__groups">
+      <div class="loading">กำลังโหลดผลงาน…</div>
+    </div>
+  </section>
+
+  <!-- ============ VIDEOS (YouTube Playlist) ============ -->
+  <section class="videos" id="videos">
+    <div class="works__head">
+      <h2 class="section__title">SHOWREEL</h2>
+      <p class="section__sub">วิดีโอผลงาน · YouTube Playlist</p>
+    </div>
+    <div id="videoWrap" class="video__wrap">
+      <div class="loading">กำลังโหลดวิดีโอ…</div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact" id="contact">
+    <div class="contact__inner">
+      <div class="contact__info">
+        <h2 class="contact__title">Contact Me</h2>
+        <p class="contact__lead">ติดต่อ · ร่วมงานกันได้เลย</p>
+
+        <div class="contact__block">
+          <h3>Contact Info · ข้อมูลติดต่อ</h3>
+          <ul id="contactList"></ul>
+        </div>
+
+        <div class="contact__block">
+          <h3>Social Handles · โซเชียล</h3>
+          <ul id="socialList" class="social"></ul>
+        </div>
+      </div>
+
+      <div class="contact__form">
+        <div class="field"><input type="text" id="cName" placeholder="Name · ชื่อ"></div>
+        <div class="field"><input type="email" id="cEmail" placeholder="Email · อีเมล"></div>
+        <div class="field"><textarea id="cMsg" rows="5" placeholder="Message · ข้อความ"></textarea></div>
+        <button class="btn btn--solid btn--full" id="sendBtn">Send · ส่ง</button>
+        <p class="form__status" id="formStatus"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Ekaphan · Portfolio. Made with Google Sheet + Drive.</p>
+  </footer>
+
+  <!-- Lightbox วิดีโอ -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox__inner">
+      <button class="lightbox__close" id="lbClose">✕</button>
+      <iframe id="lbFrame" allow="autoplay" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---- NAV ---- */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('nav--solid', scrollY > 40));
+const burger = document.getElementById('burger');
+const links = document.querySelector('.nav__links');
+burger.addEventListener('click', () => links.classList.toggle('open'));
+links.addEventListener('click', e => { if (e.target.tagName === 'A') links.classList.remove('open'); });
+
+/* ---- ไอคอนโซเชียลแบบ inline SVG (ตาม key) ---- */
+const ICONS = {
+  email:'✉', phone:'✆', location:'⌖',
+  facebook:'f', twitter:'𝕏', x:'𝕏', instagram:'◉',
+  linkedin:'in', behance:'Be', youtube:'▶', line:'L', tiktok:'♪', web:'🌐'
+};
+function iconFor(t){ return ICONS[String(t||'').toLowerCase().trim()] || '•'; }
+
+/* ---- CONFIG: Google Sheet public CSV ---- */
+/* URL ของ Cloudflare Worker (proxy Google Sheet) — แก้เป็นของคุณหลัง deploy Worker */
+const WORKER_URL = 'https://ekaphan-sheet.YOUR-SUBDOMAIN.workers.dev';
+const CSV_URL = (tab) => `${WORKER_URL}/?tab=${encodeURIComponent(tab)}`;
+
+/* ---- Parser CSV แบบง่าย ---- */
+function parseCSV(text){
+  const rows = [];
+  let row = [], cell = '', inQuote = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuote){
+      if (c === '"' && text[i+1] === '"'){ cell += '"'; i++; }
+      else if (c === '"'){ inQuote = false; }
+      else cell += c;
+    } else {
+      if (c === '"') inQuote = true;
+      else if (c === ','){ row.push(cell); cell = ''; }
+      else if (c === '\n'){ row.push(cell); rows.push(row); row = []; cell = ''; }
+      else if (c === '\r'){ /* skip */ }
+      else cell += c;
+    }
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+/* CSV rows -> array of {header:value} */
+function csvToObjects(text){
+  const rows = parseCSV(text).filter(r => r.some(c => String(c).trim() !== ''));
+  if (rows.length < 2) return [];
+  const headers = rows[0].map(h => String(h).trim());
+  return rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = row[i]);
+    return obj;
+  });
+}
+
+/* fetch tab -> array of objects */
+async function fetchTab(name){
+  try {
+    const res = await fetch(CSV_URL(name));
+    if (!res.ok) return [];
+    return csvToObjects(await res.text());
+  } catch(e){ console.warn('fetch', name, 'failed:', e); return []; }
+}
+
+/* Profile key/value -> object */
+function toProfile(rows){
+  const p = {};
+  (rows||[]).forEach(r => { if (r.Key) p[String(r.Key).trim()] = r.Value; });
+  return p;
+}
+
+/* ---- โหลดข้อมูลแบบ progressive ---- */
+let PROFILE_CACHE = {};
+
+async function boot(){
+  // เฟส 1: critical data (Profile + Contact) โหลดคู่ขนาน
+  try {
+    const [profileRows, contact] = await Promise.all([
+      fetchTab('Profile'),
+      fetchTab('Contact')
+    ]);
+    renderCritical({ profile: toProfile(profileRows), contact });
+  } catch(e){
+    console.error('critical error:', e);
+    renderDemo();
+    return;
+  }
+
+  // เฟส 2: rest — โหลดคู่ขนาน 6 tab
+  try {
+    const [hobbies, education, experience, software, works, videos] = await Promise.all([
+      fetchTab('Hobbies'),
+      fetchTab('Education'),
+      fetchTab('Experience'),
+      fetchTab('Software'),
+      fetchTab('Works'),
+      fetchTab('Videos')
+    ]);
+    renderRest({ hobbies, education, experience, software, works, videos });
+  } catch(e){
+    console.error('rest error:', e);
+  }
+}
+
+function renderCritical(data){
+  const p = data.profile || {};
+  PROFILE_CACHE = p;
+  // Hero
+  setText('heroFirst', p.NameTop || p.FirstName || 'PROFILE');
+  setText('heroLast',  p.NameBig || p.LastName  || 'EKAPHAN');
+  setText('heroRole',  p.Role || 'Graphic & Advertising Designer');
+  setText('navLogo',   p.Brand || 'EKAPHAN');
+  // About
+  setText('aboutHead', p.AboutTitle || 'About');
+  setText('aboutEmail',p.Email || '');
+  setText('aboutDesc', p.About || '');
+  setText('aboutLoc',  p.Location || '');
+  const ph = document.getElementById('aboutPhoto');
+  if (p.Photo) ph.src = p.Photo; else ph.parentElement.style.background='linear-gradient(160deg,var(--navy-800),var(--ink))';
+  renderContact(data.contact || []);
+  setTimeout(initReveal, 60);
+}
+
+function renderRest(data){
+  const p = PROFILE_CACHE || {};
+  renderHobbies(data.hobbies || []);
+  renderEducation(data.education || []);
+  renderExperience(data.experience || []);
+  renderSoftware(data.software || []);
+  renderWorks(data.works || []);
+  renderVideos(data.videos || [], p.YoutubePlaylist || '', p.PlaylistUrl || '');
+  setTimeout(initReveal, 60);
+}
+
+/* backward-compat: ถ้ามีใครยังเรียก render(data) */
+function render(data){
+  renderCritical(data);
+  renderRest(data);
+}
+
+/* ไอคอนงานอดิเรก (SVG inline ตามคีย์คอลัมน์ Icon) */
+const HOBBY_SVG = {
+  game:'<svg viewBox="0 0 24 24"><path d="M6 9h2v2h2v2H8v2H6v-2H4v-2h2V9zm11 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm-2.5 3.5A1.5 1.5 0 1116 14a1.5 1.5 0 01-1.5-1.5zM7 5h10a5 5 0 015 5v4a5 5 0 01-9 3H11a5 5 0 01-9-3v-4a5 5 0 015-5z"/></svg>',
+  youtube:'<svg viewBox="0 0 24 24"><path d="M23 12s0-3.9-.5-5.6a2.9 2.9 0 00-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 00-2 2C1 8.1 1 12 1 12s0 3.9.5 5.6a2.9 2.9 0 002 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 002-2C23 15.9 23 12 23 12zM10 15V9l5 3-5 3z"/></svg>',
+  movie:'<svg viewBox="0 0 24 24"><path d="M4 4h3l1 3H5L4 4zm5 0h3l1 3h-3L9 4zm5 0h3l1 3h-3l-1-3zM3 9h18v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>',
+  football:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3l2.5 1.8-1 3h-3l-1-3L12 5zM5.5 9.3l2.8.2 1 3-2 2.3-2.4-1a8 8 0 01.6-4.5zm13 0a8 8 0 01.6 4.5l-2.4 1-2-2.3 1-3 2.8-.2zM9 18.8l1.5-2.3h3L15 18.8A7.9 7.9 0 019 18.8z"/></svg>',
+  travel:'<svg viewBox="0 0 24 24"><path d="M9 3a2 2 0 012-2h2a2 2 0 012 2v1h2a2 2 0 012 2v13a2 2 0 01-2 2h-1v1h-2v-1H8v1H6v-1H5a2 2 0 01-2-2V6a2 2 0 012-2h4V3zm2 1h2V3h-2v1zM8 7v11h1V7H8zm7 0v11h1V7h-1z"/></svg>',
+  music:'<svg viewBox="0 0 24 24"><path d="M9 17a3 3 0 11-2-2.8V4l11-2v12a3 3 0 11-2-2.8V6L9 7.5V17z"/></svg>',
+  book:'<svg viewBox="0 0 24 24"><path d="M4 4a2 2 0 012-2h13v18H6a2 2 0 00-2 2V4zm3 1v13h10V4H7a1 1 0 00-1 1z"/></svg>',
+  camera:'<svg viewBox="0 0 24 24"><path d="M9 3h6l1.5 2H20a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2h3.5L9 3zm3 5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z"/></svg>'
+};
+function hobbyIcon(k){ return HOBBY_SVG[String(k||'').toLowerCase().trim()] || '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>'; }
+
+function renderHobbies(rows){
+  const box=document.getElementById('hobbiesGrid');
+  const panel=document.getElementById('panelHobbies');
+  if(!rows.length){ panel.style.display='none'; return; }
+  box.innerHTML=rows.map(r=>`
+    <div class="hobby"><span class="ico">${hobbyIcon(r.Icon)}</span>
+      <span>${esc(r.Name||r.Label||'')}</span></div>`).join('');
+}
+
+function renderEducation(rows){
+  const box=document.getElementById('eduList');
+  const panel=document.getElementById('panelEdu');
+  if(!rows.length){ panel.style.display='none'; return; }
+  // group ตาม School
+  const g={};
+  rows.forEach(r=>{ const s=(r.School||'').trim(); (g[s]=g[s]||[]).push(r); });
+  box.innerHTML=Object.keys(g).map(school=>`
+    <div class="edu__item"><h4>${esc(school)}</h4><ul>${
+      g[school].map(r=>`<li><b>${esc(r.Program||'')}</b>
+        ${r.Degree?`<span>(${esc(r.Degree)})</span>`:''}
+        ${r.Grade?`<span class="edu__grade">เกรด ${esc(r.Grade)}</span>`:''}</li>`).join('')
+    }</ul></div>`).join('');
+}
+
+function renderExperience(rows){
+  const box=document.getElementById('expList');
+  const panel=document.getElementById('panelExp');
+  if(!rows.length){ panel.style.display='none'; return; }
+  box.innerHTML=rows.map(r=>`
+    <div class="exp__row"><div class="exp__bar">
+      <span class="exp__name">${esc(r.Company||r.Name||'')}</span>
+      <span class="exp__year">${esc(r.Years||r.Period||'')}</span>
+    </div>${r.Duration?`<div class="exp__dur">${esc(r.Duration)}</div>`:''}</div>`).join('');
+}
+
+function renderSoftware(rows){
+  const main=rows.filter(r=>String(r.Type||'').toLowerCase().trim()==='main');
+  const sub =rows.filter(r=>String(r.Type||'').toLowerCase().trim()!=='main');
+  const mg=document.getElementById('softMainGrid');
+  const sg=document.getElementById('softSubGrid');
+  if(!main.length) document.getElementById('panelSoftMain').style.display='none';
+  else mg.innerHTML=main.map(r=>{
+    const lvl=Math.max(0,Math.min(100,parseInt(r.Level||0)||0));
+    return `<div class="smcard">
+      <div class="smcard__badge">${esc(r.Short||r.Name||'')}</div>
+      <div class="smcard__name">${esc(r.Name||'')}</div>
+      ${lvl?`<div class="smcard__meter"><div class="smcard__fill" style="width:${lvl}%"></div></div>`:''}
+    </div>`;
+  }).join('');
+  if(!sub.length) document.getElementById('panelSoftSub').style.display='none';
+  else sg.innerHTML=sub.map(r=>`
+    <div class="subitem"><span class="badge">${esc(r.Short||(r.Name||'').slice(0,2))}</span>
+      <span>${esc(r.Name||'')}</span></div>`).join('');
+}
+
+/* ---- WORKS: สไลด์แนวนอนทีละหมวด + ratio ต่อชิ้น ---- */
+function renderWorks(works){
+  const box = document.getElementById('worksGroups');
+  if (!works.length){ box.innerHTML = '<div class="loading">ยังไม่มีผลงาน · เพิ่มข้อมูลในชีต Works</div>'; return; }
+  const groups = {};
+  works.forEach(w => {
+    const cat = (w.Category || 'อื่นๆ').toString().trim();
+    (groups[cat] = groups[cat] || []).push(w);
+  });
+  box.innerHTML = Object.keys(groups).map((cat, gi) => {
+    const en = groups[cat][0].CategoryEN || '';
+    const cards = groups[cat].map(w => {
+      const ratio = String(w.Ratio||'4:5').trim().replace(':','-'); // 9-16 / 4-5
+      const rClass = (ratio==='9-16') ? 'r916' : 'r45';
+      return `
+      <div class="wcard ${rClass}" ${w.Link ? `data-link="${esc(w.Link)}"`:''}>
+        ${w.Image ? `<img src="${esc(w.Image)}" alt="${esc(w.Title||'')}" loading="lazy">` : '<div class="wcard__ph"></div>'}
+        ${w.Title ? `<div class="wcard__cap">${esc(w.Title)}</div>`:''}
+      </div>`;
+    }).join('');
+    return `<div class="wgroup">
+      <div class="wgroup__bar">
+        <div class="wgroup__label">${esc(cat)}${en?`<small>${esc(en)}</small>`:''}</div>
+        <div class="wgroup__nav">
+          <button class="wnav prev" data-t="${gi}" aria-label="ก่อนหน้า">‹</button>
+          <button class="wnav next" data-t="${gi}" aria-label="ถัดไป">›</button>
+        </div>
+      </div>
+      <div class="wgroup__track" id="wtrack-${gi}">${cards}</div>
+    </div>`;
+  }).join('');
+
+  // เลื่อนซ้าย-ขวา
+  box.querySelectorAll('.wnav').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const track=document.getElementById('wtrack-'+btn.dataset.t);
+      const amount=Math.max(track.clientWidth*.8, 260);
+      track.scrollBy({left: btn.classList.contains('next')?amount:-amount, behavior:'smooth'});
+    });
+  });
+  // คลิกการ์ดเปิดลิงก์
+  box.querySelectorAll('.wcard[data-link]').forEach(c =>
+    c.addEventListener('click', () => window.open(c.dataset.link, '_blank')));
+}
+
+/* ---- VIDEOS: player + ลิสต์เลือกเอง + สุ่มเล่นอัตโนมัติ ---- */
+let YT_VIDEOS = [];
+let YT_POOL = 0; // จำนวนวิดีโอในกลุ่มที่สุ่มได้ (ตามที่แสดงในลิสต์)
+let ytPlayer = null;
+let ytCurrent = 0;
+
+function renderVideos(videos, playlist, playlistUrl){
+  const wrap = document.getElementById('videoWrap');
+  const LIST_LIMIT = 5; // แสดงกี่ตัวก่อนขึ้นปุ่มดูเพิ่มเติม
+
+  // แปลงแต่ละแถวเป็น videoId
+  YT_VIDEOS = (videos||[]).map(v => ({
+    id: extractVideoId(v.Url || v.Link || v.VideoId || v.Id || ''),
+    title: v.Title || v.Name || ''
+  })).filter(v => v.id);
+
+  // ถ้ามีลิสต์วิดีโอ -> player + รายการเลือก
+  if (YT_VIDEOS.length){
+    const shown = YT_VIDEOS.slice(0, LIST_LIMIT);
+    const hasMore = YT_VIDEOS.length > LIST_LIMIT;
+    YT_POOL = shown.length; // สุ่มเฉพาะในกลุ่มที่แสดง
+    ytCurrent = Math.floor(Math.random() * shown.length); // สุ่มตัวเริ่มในกลุ่มที่แสดง
+    // ปุ่มดูเพิ่มเติม: ลิงก์ที่ตั้งเอง > playlist ID เดิม
+    const moreUrl = (playlistUrl||'').trim()
+      || (extractPlaylistId(playlist) ? 'https://www.youtube.com/playlist?list='+extractPlaylistId(playlist) : '');
+
+    wrap.innerHTML = `
+      <div class="video__player">
+        <div class="video__embed">
+          <div id="ytFrame"></div>
+        </div>
+      </div>
+      <div class="video__list" id="videoList">
+        ${shown.map((v,i)=>`
+          <button class="vitem ${i===ytCurrent?'active':''}" data-i="${i}">
+            <span class="vitem__thumb">
+              <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy">
+              <span class="vitem__play">▶</span>
+            </span>
+            <span class="vitem__title">${esc(v.title || ('วิดีโอ '+(i+1)))}</span>
+          </button>`).join('')}
+        ${hasMore && moreUrl ? `
+          <a class="vmore" href="${esc(moreUrl)}" target="_blank" rel="noopener">
+            <span class="vmore__ic">▶</span>
+            <span class="vmore__txt">ดูเพิ่มเติม<small>+${YT_VIDEOS.length - LIST_LIMIT} วิดีโอบน YouTube</small></span>
+            <span class="vmore__arrow">↗</span>
+          </a>` : ''}
+      </div>`;
+
+    // คลิกเลือกวิดีโอเอง
+    document.getElementById('videoList').querySelectorAll('.vitem').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        playVideoAt(+btn.dataset.i, true);
+        if(window.innerWidth<=860) document.getElementById('videos').scrollIntoView({behavior:'smooth'});
+      });
+    });
+
+    loadYouTubeAPI(initYtPlayer);
+    return;
+  }
+
+  // fallback: ถ้าไม่มีลิสต์ แต่มี playlist -> ฝัง playlist แบบเดิม
+  const pid = extractPlaylistId(playlist);
+  if (pid){
+    wrap.innerHTML = `<div class="video__embed">
+      <iframe src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(pid)}&rel=0"
+        title="YouTube playlist" frameborder="0" loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = '<div class="loading">ยังไม่มีวิดีโอ · เพิ่มลิงก์ในชีต Videos หรือใส่ YoutubePlaylist ในชีต Profile</div>';
+}
+
+/* โหลด YouTube IFrame API ครั้งเดียว */
+function loadYouTubeAPI(cb){
+  if(window.YT && window.YT.Player){ cb(); return; }
+  // มี callback รออยู่แล้ว
+  const prev = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function(){ if(prev) prev(); cb(); };
+  if(!document.getElementById('yt-iframe-api')){
+    const s=document.createElement('script');
+    s.id='yt-iframe-api'; s.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  }
+}
+
+/* สร้าง player (ตอนโหลด: ยังไม่เล่น รอกด play — เงียบ) */
+function initYtPlayer(){
+  ytPlayer = new YT.Player('ytFrame', {
+    videoId: YT_VIDEOS[ytCurrent].id,
+    playerVars:{ rel:0, playsinline:1 },
+    events:{ 'onStateChange': onYtStateChange }
+  });
+}
+
+/* วิดีโอจบ (state=0) -> สุ่มตัวถัดไปในกลุ่มที่แสดง (เลี่ยงซ้ำตัวเดิม) */
+function onYtStateChange(e){
+  if(e.data === YT.PlayerState.ENDED){
+    const pool = YT_POOL || YT_VIDEOS.length;
+    let next = ytCurrent;
+    if(pool > 1){
+      while(next === ytCurrent) next = Math.floor(Math.random()*pool);
+    }
+    playVideoAt(next, true);
+  }
+}
+
+/* เล่นวิดีโอตาม index + อัปเดตลิสต์ active */
+function playVideoAt(i, autoplay){
+  ytCurrent = i;
+  const v = YT_VIDEOS[i];
+  if(ytPlayer && ytPlayer.loadVideoById){
+    autoplay ? ytPlayer.loadVideoById(v.id) : ytPlayer.cueVideoById(v.id);
+  }
+  const list = document.getElementById('videoList');
+  if(list){
+    list.querySelectorAll('.vitem').forEach(b=>b.classList.remove('active'));
+    const btn = list.querySelector('.vitem[data-i="'+i+'"]');
+    if(btn) btn.classList.add('active');
+  }
+}
+
+/* รับ URL/ID วิดีโอ -> คืน videoId */
+function extractVideoId(v){
+  v = String(v||'').trim();
+  if(!v) return '';
+  let m = v.match(/[?&]v=([^&]+)/);           if(m) return m[1];   // watch?v=
+  m = v.match(/youtu\.be\/([^?&/]+)/);        if(m) return m[1];   // youtu.be/
+  m = v.match(/\/embed\/([^?&/]+)/);          if(m) return m[1];   // /embed/
+  m = v.match(/\/shorts\/([^?&/]+)/);         if(m) return m[1];   // /shorts/
+  return v; // ถือว่าเป็น ID อยู่แล้ว
+}
+
+/* รับได้ทั้ง playlist ID ตรงๆ หรือ URL เต็ม */
+function extractPlaylistId(v){
+  v = String(v||'').trim();
+  if(!v) return '';
+  const m = v.match(/[?&]list=([^&]+)/);
+  if(m) return m[1];
+  return v; // ถือว่าเป็น ID อยู่แล้ว
+}
+
+/* ---- CONTACT ---- */
+function renderContact(rows){
+  const info = document.getElementById('contactList');
+  const social = document.getElementById('socialList');
+  info.innerHTML=''; social.innerHTML='';
+  rows.forEach(r => {
+    const type = (r.Type||'').toLowerCase();
+    const icon = iconFor(r.Icon || r.Type);
+    const li = document.createElement('li');
+    if (type === 'social'){
+      li.innerHTML = `<span class="ic">${icon}</span>
+        ${r.Url ? `<a href="${esc(r.Url)}" target="_blank">${esc(r.Value||r.Label)}</a>` : esc(r.Value||r.Label)}`;
+      social.appendChild(li);
+    } else {
+      li.innerHTML = `<span class="ic">${icon}</span>
+        ${r.Url ? `<a href="${esc(r.Url)}" target="_blank">${esc(r.Value||r.Label)}</a>` : esc(r.Value||r.Label)}`;
+      info.appendChild(li);
+    }
+  });
+}
+
+/* ---- LIGHTBOX ---- */
+const lb = document.getElementById('lightbox');
+const lbFrame = document.getElementById('lbFrame');
+function openLightbox(url){ lbFrame.src = url; lb.classList.add('open'); }
+function closeLightbox(){ lb.classList.remove('open'); lbFrame.src=''; }
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* ---- ฟอร์มติดต่อ: เปิด email client (mailto) ---- */
+document.getElementById('sendBtn').addEventListener('click', () => {
+  const name = val('cName'), email = val('cEmail'), message = val('cMsg');
+  const status = document.getElementById('formStatus');
+  if (!name || !message){ status.className='form__status err'; status.textContent='กรุณากรอกชื่อและข้อความ'; return; }
+  const to = (PROFILE_CACHE.Email || '').trim();
+  if (!to){ status.className='form__status err'; status.textContent='ยังไม่ได้ตั้งอีเมลผู้รับ'; return; }
+  const subject = encodeURIComponent(`ติดต่อจากเว็บพอร์ต — ${name}`);
+  const body = encodeURIComponent(`ชื่อ: ${name}\nอีเมล: ${email}\n\nข้อความ:\n${message}`);
+  window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+  status.className='form__status ok';
+  status.textContent='กำลังเปิดแอปอีเมล… กด Send ในแอปเพื่อส่ง';
+});
+
+/* ---- scroll-reveal เนียนๆ ---- */
+function initReveal(){
+  const els = document.querySelectorAll('.about__inner, .panel, .wgroup, .video__wrap, .contact__inner, .works__head, .videos .works__head');
+  els.forEach(el => el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        e.target.style.transitionDelay = Math.min(i*60,180)+'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(el=>io.observe(el));
+}
+
+/* ---- helpers ---- */
+function setText(id,v){ const el=document.getElementById(id); if(el) el.textContent=v; }
+function val(id){ return document.getElementById(id).value.trim(); }
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---- DEMO (เวลาเปิดไฟล์ตรงๆ ไม่ผ่าน Apps Script) ---- */
+function renderDemo(){
+  render({
+    profile:{NameTop:'PROFILE',NameBig:'EKAPHAN',Role:'Graphic & Advertising Designer',
+      AboutTitle:'About',Email:'ekaphan@example.com',
+      About:'นักออกแบบกราฟิกและงานโฆษณา · ประสบการณ์งานสื่อโฆษณาออนไลน์ สื่อสิ่งพิมพ์ งานสร้างแบรนด์ และงานถ่ายภาพ',
+      Location:'Bangkok, Thailand',
+      YoutubePlaylist:'PLBCF2DAC6FFB574DE',
+      PlaylistUrl:'https://www.youtube.com/playlist?list=PLBCF2DAC6FFB574DE'},
+    works:[
+      {Category:'งานสื่อโฆษณาออนไลน์',CategoryEN:'Online Ads',Title:'Story Ad',Ratio:'9:16'},
+      {Category:'งานสื่อโฆษณาออนไลน์',CategoryEN:'Online Ads',Title:'Reels',Ratio:'9:16'},
+      {Category:'งานสื่อโฆษณาออนไลน์',CategoryEN:'Online Ads',Title:'Feed Post',Ratio:'4:5'},
+      {Category:'งานสื่อโฆษณาออนไลน์',CategoryEN:'Online Ads',Title:'Banner',Ratio:'4:5'},
+      {Category:'งานสื่อสิ่งพิมพ์',CategoryEN:'Print',Title:'Brochure',Ratio:'4:5'},
+      {Category:'งานสื่อสิ่งพิมพ์',CategoryEN:'Print',Title:'Poster',Ratio:'9:16'},
+      {Category:'งานสร้างแบรนด์และแพคเกจจิ้ง',CategoryEN:'Branding',Title:'Logo',Ratio:'4:5'},
+      {Category:'งานสร้างแบรนด์และแพคเกจจิ้ง',CategoryEN:'Branding',Title:'Package',Ratio:'4:5'},
+      {Category:'งานถ่ายภาพ',CategoryEN:'Photography',Title:'Product',Ratio:'9:16'},
+      {Category:'งานถ่ายภาพ',CategoryEN:'Photography',Title:'Portrait',Ratio:'4:5'}
+    ],
+    videos:[
+      {Title:'Showreel 2025',Url:'https://youtu.be/aqz-KE-bpKQ'},
+      {Title:'โฆษณาสินค้า A',Url:'https://www.youtube.com/watch?v=ScMzIvxBSi4'},
+      {Title:'Motion Graphic',Url:'https://youtu.be/9bZkp7q19f0'},
+      {Title:'Event Recap',Url:'https://youtu.be/kJQP7kiw5Fk'},
+      {Title:'Brand Story',Url:'https://youtu.be/L_jWHffIx5E'},
+      {Title:'Product Launch',Url:'https://youtu.be/fJ9rUzIMcZQ'},
+      {Title:'Behind the Scenes',Url:'https://youtu.be/hT_nvWreIhg'}
+    ],
+    contact:[
+      {Type:'email',Icon:'email',Value:'ekaphan@example.com'},
+      {Type:'phone',Icon:'phone',Value:'08x-xxx-xxxx'},
+      {Type:'social',Icon:'facebook',Value:'Ekaphan',Url:'#'},
+      {Type:'social',Icon:'instagram',Value:'@ekaphan',Url:'#'},
+      {Type:'social',Icon:'behance',Value:'ekaphan',Url:'#'}
+    ],
+    hobbies:[
+      {Icon:'game',Name:'เล่นเกม'},{Icon:'youtube',Name:'ดูยูทูป'},
+      {Icon:'movie',Name:'ดูหนัง'},{Icon:'football',Name:'ดูฟุตบอล'},
+      {Icon:'travel',Name:'ท่องเที่ยว'}
+    ],
+    education:[
+      {School:'วิทยาลัยเทคโนโลยีพณิชยการสยาม',Program:'สาขา คอมพิวเตอร์ธุรกิจ',Degree:'ปวช.',Grade:'3.33'},
+      {School:'วิทยาลัยเทคโนโลยีพณิชยการสยาม',Program:'สาขา คอมพิวเตอร์กราฟิก',Degree:'ปวส.',Grade:'3.28'}
+    ],
+    experience:[
+      {Company:'BIKINI RISQUE',Years:'2015 - 2016',Duration:'1Y'},
+      {Company:'VGROUP CARS',Years:'2016 - 2019',Duration:'3Y'},
+      {Company:'SAWANG EXPORT',Years:'2019 - 2021',Duration:'2Y'},
+      {Company:'AI AND ROBOTICS VENTURES',Years:'2022 - 2023',Duration:'1Y'},
+      {Company:'SALUS BIOCEUTICAL',Years:'2023 - 2025',Duration:'2Y'}
+    ],
+    software:[
+      {Type:'main',Short:'Ai',Name:'Illustrator',Level:70},
+      {Type:'main',Short:'Ps',Name:'Photoshop',Level:80},
+      {Type:'main',Short:'Lr',Name:'Lightroom',Level:75},
+      {Type:'main',Short:'Ae',Name:'After Effect',Level:60},
+      {Type:'main',Short:'Pr',Name:'Premiere Pro',Level:65},
+      {Type:'main',Short:'Au',Name:'Audition',Level:55},
+      {Type:'sub',Short:'P',Name:'Power Point'},
+      {Type:'sub',Short:'W',Name:'Word'},
+      {Type:'sub',Short:'X',Name:'Excel'},
+      {Type:'sub',Short:'GS',Name:'Google Slide'},
+      {Type:'sub',Short:'Fi',Name:'Figma'},
+      {Type:'sub',Short:'AI',Name:'Generative AI Tools'}
+    ]
+  });
+}
+
+boot();
+</script>
+
+</body>
+</html>
